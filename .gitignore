@@ -1,0 +1,11 @@
+.nfs*
+*.swp
+*.lock
+*.out
+*.pyc
+*~
+*.swo
+*.csv
+settings_local.py
+whoosh_index
+
