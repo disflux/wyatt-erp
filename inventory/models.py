@@ -57,7 +57,8 @@ class InventoryTag(models.Model)
         """
         Splits a tag number into a new tag number. This is useful for situations
         in which a product with a single lot number will not phsycically fit in 
-        a single location.
+        a single location. This creates a new tag number and location, but
+        retains all other information associated.
         """
         
         new_tag = InventoryTag(item=self.item, 
