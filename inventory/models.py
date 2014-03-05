@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Avg, Sum
 
+from vendors.models import Vendor
+
 class InventoryLocation(models.Model):
     """
     A specific physical location in a warehouse.
@@ -20,25 +22,29 @@ class InventoryItem(models.Model):
     """
     An inventory object
     """
-    
+
     UOM_CHOICES = (
-                    ('EA', 'Each'),
-                    ('LB', 'Pound'),
-                    ('FT', 'Foot'),
-                    ('IN', 'Inch'),
-                 )
-                 
-    part_number = models.ForeignKey(Part)
+        ('EA', 'Each'),
+        ('LB', 'Pound'),
+        ('FT', 'Foot'),
+        ('IN', 'Inch'),
+        ('C', 'Hundred'),
+        ('M', 'Thousand'),
+        ('CWT', 'Hundred Weight'),
+
+    )
+
+    part_number = models.CharField(unique=True, max_length=64)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     stocking_uom = models.CharField(max_length=4, choices=UOM_CHOICES)
-    part_weight = models.DecimalField()
-    
+    part_weight = models.DecimalField(max_digits=10, decimal_places=10)
+
     def __unicode__(self):
         return self.part_number
     
-class InventoryTag(models.Model)
+class InventoryTag(models.Model):
     """
     A physical inventory item, which is identified by its tag number. Related
     to `InventoryItem` and `InventoryLocation`.
@@ -47,11 +53,11 @@ class InventoryTag(models.Model)
     tag_number = models.IntegerField()
     item = models.ForeignKey(InventoryItem)
     location = models.ForeignKey(InventoryLocation)
-    lot_number = models.CharField()
+    lot_number = models.CharField(max_length=32)
     vendor = models.ForeignKey(Vendor)
-    unit_cost = models.DecimalField()
+    unit_cost = models.DecimalField(max_digits=10, decimal_places=10)
     receiving_date = models.DateTimeField(auto_now_add=True)
-    quantity = models.DecimalField()
+    quantity = models.DecimalField(max_digits=10, decimal_places=10)
     
     def split_tag(self, quantity, location):
         """
