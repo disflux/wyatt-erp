@@ -51,6 +51,13 @@ class InventoryItem(models.Model):
 
     def __unicode__(self):
         return self.part_number
+        
+class ItemCrossReference(models.Model):
+    item = models.ForeignKey(InventoryItem)
+    cross_reference = models.CharField(max_length=32)
+    
+    def __unicode__(self):
+        return self.cross_reference
     
 class InventoryTag(models.Model):
     """
