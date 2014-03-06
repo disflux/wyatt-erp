@@ -33,12 +33,19 @@ class InventoryItem(models.Model):
         ('CWT', 'Hundred Weight'),
 
     )
+    
+    PART_TYPES = (
+        ('P', 'Purchased'),
+        ('M', 'Manufactured'),
+    )
 
     part_number = models.CharField(unique=True, max_length=64)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
-    stocking_uom = models.CharField(max_length=4, choices=UOM_CHOICES)
+    part_type = models.CharField(max_length=1, choices=PART_TYPES, default='M')
+    stocking_uom = models.CharField(max_length=4, choices=UOM_CHOICES, default='EA')
+    purchasing_uom = models.CharField(max_length=4, choices=UOM_CHOICES, default='EA')
     part_weight = models.DecimalField(max_digits=10, decimal_places=10)
 
     def __unicode__(self):
@@ -53,7 +60,7 @@ class InventoryTag(models.Model):
     tag_number = models.IntegerField()
     item = models.ForeignKey(InventoryItem)
     location = models.ForeignKey(InventoryLocation)
-    lot_number = models.CharField(max_length=32)
+    lot_number = models.CharField(max_length=16)
     vendor = models.ForeignKey(Vendor)
     unit_cost = models.DecimalField(max_digits=10, decimal_places=10)
     receiving_date = models.DateTimeField(auto_now_add=True)
@@ -74,8 +81,30 @@ class InventoryTag(models.Model):
         self.save()
     
     def __unicode__(self):
-        return self.tag_number
-    
-    
+        return self.tag_number   
 
+class RoutingStep(models.Model):
+    STEP_TYPES = (
+        ('I', 'Internal'),
+        ('E', 'External'),
+    )
+    
+    TIME_INTERVALS = (
+        ('S', 'Seconds'),
+        ('M', 'Minutes'),
+        ('H', 'Hours'),
+    )
+    
+    part = models.ForeignKey(InventoryItem)
+    step_number = models.IntegerField()
+    setup_time = models.IntegerField()
+    setup_interval = models.CharField(max_length=1, choices=TIME_INTERVALS)
+    cycle_time = models.IntegerField()
+    cycle_interval = models.CharField(max_length=1, choices=TIME_INTERVALS)
+    
+    class Meta:
+        ordering = ['step_number']
+        
+    def __unicode__(self):
+        return self.step_number
 
