@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Avg, Sum
 
 from purchasing.models import Vendor
+from quality.models import Report
 
 class InventoryLocation(models.Model):
     """
@@ -60,7 +61,7 @@ class InventoryTag(models.Model):
     tag_number = models.IntegerField()
     item = models.ForeignKey(InventoryItem)
     location = models.ForeignKey(InventoryLocation)
-    lot_number = models.CharField(max_length=16)
+    lot_number = models.ForeignKey(Report)
     vendor = models.ForeignKey(Vendor)
     unit_cost = models.DecimalField(max_digits=10, decimal_places=10)
     receiving_date = models.DateTimeField(auto_now_add=True)

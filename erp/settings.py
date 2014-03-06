@@ -41,9 +41,9 @@ INSTALLED_APPS = (
     'south',
 
     # Local Apps
-    'purchasing',
     'inventory',
-    
+    'purchasing',
+    'quality',
 )
 
 MIDDLEWARE_CLASSES = (
