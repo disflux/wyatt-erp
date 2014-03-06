@@ -9,24 +9,24 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'Vendor'
-        db.create_table(u'vendors_vendor', (
+        db.create_table(u'purchasing_vendor', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=32)),
         ))
-        db.send_create_signal(u'vendors', ['Vendor'])
+        db.send_create_signal(u'purchasing', ['Vendor'])
 
 
     def backwards(self, orm):
         # Deleting model 'Vendor'
-        db.delete_table(u'vendors_vendor')
+        db.delete_table(u'purchasing_vendor')
 
 
     models = {
-        u'vendors.vendor': {
+        u'purchasing.vendor': {
             'Meta': {'object_name': 'Vendor'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '64'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '32'})
         }
     }
 
-    complete_apps = ['vendors']
+    complete_apps = ['purchasing']

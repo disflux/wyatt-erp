@@ -41,8 +41,8 @@ INSTALLED_APPS = (
     'south',
 
     # Local Apps
+    'purchasing',
     'inventory',
-    'vendors',
     
 )
 
